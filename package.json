@@ -1,0 +1,39 @@
+{
+  "name": "blockchain-price-tracker",
+  "version": "1.0.0",
+  "description": "A NestJS-based blockchain price tracker",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^2.3.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^11.0.6",
+    "@nestjs/typeorm": "^10.0.0",
+    "axios": "^1.8.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.10.0",
+    "pg": "^8.10.0",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.16"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.9",
+    "@nestjs/schematics": "^10.0.0",
+    "@nestjs/testing": "^10.0.0",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^6.4.17",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "pnpm@10.5.2"
+}
