@@ -52,4 +52,19 @@ export class PriceService {
       }
     }
   }
+
+  async sendLatestPriceEmail(chain: string, email: string): Promise<string> {
+    const latestPrice = await this.priceRepository.findOne({
+      where: { chain },
+      order: { createdAt: 'DESC' },
+    });
+
+    if (!latestPrice) {
+      return `No price data found for ${chain}`;
+    }
+
+    await this.emailService.sendPriceEmail(chain, latestPrice.price, email);
+
+    return `Email sent to ${email} with the latest price of ${chain}: $${latestPrice.price}`;
+  }
 }

@@ -44,4 +44,25 @@ export class EmailService {
       this.logger.error(`Failed to send email: ${error.message || JSON.stringify(error)}`);
     }
   }
+
+  async sendPriceEmail(chain: string, price: number, recipientEmail: string): Promise<void> {
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      this.logger.error('SMTP configuration is missing.');
+      return;
+    }
+
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: recipientEmail,
+      subject: `📈 Latest ${chain} Price Update`,
+      text: `The latest price of ${chain} is $${price}. Check the market now!`,
+    };
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+      this.logger.log(`Email sent to ${recipientEmail} with ${chain} price: $${price}`);
+    } catch (error) {
+      this.logger.error(`Failed to send email to ${recipientEmail}: ${(error as Error).message}`);
+    }
+  }
 }

@@ -29,6 +29,9 @@ importers:
       axios:
         specifier: ^1.8.1
         version: 1.8.1
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       node-cron:
         specifier: ^3.0.3
         version: 3.0.3

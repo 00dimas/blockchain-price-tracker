@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PriceModule } from './price/price.module';
-import { EmailService } from './email/email.service';
+import { EmailModule } from './email/email.module';
+import { SwapController } from './swap/swap.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'db',
@@ -18,7 +19,8 @@ import { EmailService } from './email/email.service';
       synchronize: true,
     }),
     PriceModule,
+    EmailModule,
   ],
-  providers: [EmailService],
+  controllers: [SwapController],
 })
 export class AppModule {}

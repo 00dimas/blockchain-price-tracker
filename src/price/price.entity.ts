@@ -8,7 +8,7 @@ export class Price {
   @Column()
   chain!: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', { precision: 38, scale: 18 })
   price!: number;
 
   @CreateDateColumn()

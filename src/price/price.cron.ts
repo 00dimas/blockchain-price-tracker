@@ -14,9 +14,19 @@ export class PriceCron implements OnModuleInit {
   ) {}
 
   async fetchPrice(chain: string): Promise<number> {
+    const contractAddresses: { [key: string]: string } = {
+      eth: '0xC02aaa39b223FE8D0A0E5C4F27eAD9083C756Cc2',
+      polygon: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+    };
+
+    if (!contractAddresses[chain]) {
+      this.logger.error(`Contract address for ${chain} not found`);
+      return 0;
+    }
+
     try {
       const response = await axios.get(
-        `https://deep-index.moralis.io/api/v2/erc20/price?chain=${chain}`,
+        `https://deep-index.moralis.io/api/v2/erc20/${contractAddresses[chain]}/price?chain=${chain}`,
         {
           headers: { 'X-API-Key': process.env.MORALIS_API_KEY },
         }

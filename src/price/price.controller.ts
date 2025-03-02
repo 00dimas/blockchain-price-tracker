@@ -49,4 +49,21 @@ export class PriceController {
   async setPriceAlert(@Body() { chain, price, email }: { chain: string; price: number; email: string }) {
     return this.priceService.setPriceAlert(chain, price, email);
   }
+
+  @ApiOperation({ 
+    summary: 'Send email with the latest price (Test Email Service)',
+    description: 'This endpoint is used to test if the email service is working correctly. It sends an email with the latest price of the specified chain to the given email address.'
+  })
+  @ApiBody({
+    schema: {
+      properties: {
+        chain: { type: 'string', example: 'ETHEREUM', description: 'Blockchain name (e.g., ETHEREUM, POLYGON)' },
+        email: { type: 'string', example: 'user@example.com', description: 'Recipient email address' },
+      },
+    },
+  })
+  @Post('send-price-email')
+  async sendPriceEmail(@Body() body: { chain: string; email: string }) {
+    return this.priceService.sendLatestPriceEmail(body.chain, body.email);
+  }
 }
