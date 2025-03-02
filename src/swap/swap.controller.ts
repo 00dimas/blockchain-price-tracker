@@ -1,53 +1,21 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import axios from 'axios';
+import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
+import { SwapService } from './swap.service';
 
 @Controller('swap')
 export class SwapController {
+  constructor(private readonly swapService: SwapService) {}
+
   @Get('rate')
   async getSwapRate(@Query('ethAmount') ethAmount: number) {
     if (!ethAmount) {
-      return { error: 'ethAmount is required' };
+      throw new BadRequestException('ethAmount is required');
     }
 
     try {
-      const response = await axios.get(
-        `https://deep-index.moralis.io/api/v2/erc20/price?chain=eth`,
-        {
-          headers: { 'X-API-Key': process.env.MORALIS_API_KEY },
-        }
-      );
-
-      const ethPrice = response.data.usdPrice;
-      const btcPrice = await this.getBtcPrice();
-
-      const btcEquivalent = (ethAmount * ethPrice) / btcPrice;
-      const fee = btcEquivalent * 0.03;
-      const finalAmount = btcEquivalent - fee;
-
-      return {
-        btcEquivalent,
-        fee,
-        finalAmount,
-        ethPrice,
-        btcPrice,
-        feePercentage: 0.03,
-      };
-    } catch (error: any) {
-      return { error: `Error fetching swap rate: ${error.message || error}` };
-    }
-  }
-
-  private async getBtcPrice() {
-    try {
-      const response = await axios.get(
-        `https://deep-index.moralis.io/api/v2/erc20/price?chain=eth`,
-        {
-          headers: { 'X-API-Key': process.env.MORALIS_API_KEY },
-        }
-      );
-      return response.data.usdPrice;
+      return await this.swapService.calculateSwapRate(ethAmount);
     } catch (error) {
-      throw new Error('Failed to fetch BTC price');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      throw new BadRequestException(errorMessage);
     }
   }
 }

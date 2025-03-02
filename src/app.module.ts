@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PriceModule } from './price/price.module';
 import { EmailModule } from './email/email.module';
-import { SwapController } from './swap/swap.controller';
+import { SwapModule } from './swap/swap.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { SwapController } from './swap/swap.controller';
     }),
     PriceModule,
     EmailModule,
+    SwapModule,
   ],
-  controllers: [SwapController],
 })
 export class AppModule {}
